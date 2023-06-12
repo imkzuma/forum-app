@@ -15,19 +15,21 @@ import { ForumApi } from "@/utils/api";
 export default function ForumComponents() {
   const [pages, setPages] = useState<number>(1);
   const [data, setData] = useState<any>();
+  const [totalPage, setTotalPage] = useState<number>();
 
   useLayoutEffect(() => {
     const getData = async () => {
       try {
-        const response = await ForumApi.get('/thread');
+        const response = await ForumApi.get(`/thread/?page=${pages}`);
         setData(response.data.data.threads)
+        setTotalPage(response.data.data.pagination.totalPage)
         console.log(response.data);
       } catch (error) {
-
+        console.log(error);
       }
     }
     getData();
-  }, []);
+  }, [pages]);
 
   const handlePrevPage = () => {
     if (pages > 1) {
@@ -36,7 +38,7 @@ export default function ForumComponents() {
   }
 
   const handleNextPage = () => {
-    if (pages >= 1) {
+    if (pages >= 1 && totalPage && pages < totalPage) {
       setPages(pages + 1);
     }
   }
@@ -75,19 +77,23 @@ export default function ForumComponents() {
             </Stack>
             <ChevronRightIcon fontSize={'3xl'} color={'white'} />
           </Flex>
-          {data?.map((item: any, index: number) => {
-            return (
-              <CardListForum key={index}
-                Id={item.id}
-                Title={item.title}
-                PostDate={item.createdAt}
-                Content={item.content}
-                AccountUsername={item.AccountUsername}
-                like={21}
-                dislike={2}
-              />
-            )
-          })}
+          {data?.length > 0
+            ?
+            data?.map((item: any, index: number) => {
+              return (
+                <CardListForum key={index}
+                  Id={item.id}
+                  Title={item.title}
+                  PostDate={item.createdAt}
+                  Content={item.content}
+                  AccountUsername={item.AccountUsername}
+                  like={21}
+                  dislike={2}
+                />
+              )
+            })
+            : 'No data'
+          }
 
           <Flex justifyContent={'end'} gap={5} alignItems={'center'} py={5}>
             <Button
@@ -110,6 +116,7 @@ export default function ForumComponents() {
                 bg: useColorModeValue('blue.600', 'blue.800')
               }}
               onClick={handleNextPage}
+              isDisabled={pages === totalPage}
             >
               <ChevronRightIcon
                 fontSize={'xl'}
