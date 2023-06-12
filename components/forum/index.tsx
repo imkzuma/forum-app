@@ -95,33 +95,38 @@ export default function ForumComponents() {
             : 'No data'
           }
 
-          <Flex justifyContent={'end'} gap={5} alignItems={'center'} py={5}>
-            <Button
-              bg={useColorModeValue('blue.500', 'blue.700')}
-              color={'white'}
-              _hover={{
-                bg: useColorModeValue('blue.600', 'blue.800')
-              }}
-              isDisabled={pages === 1}
-              onClick={handlePrevPage}
-            >
-              <ChevronLeftIcon
-                fontSize={'xl'}
-              />
-            </Button>
-            <Button
-              bg={useColorModeValue('blue.500', 'blue.700')}
-              color={'white'}
-              _hover={{
-                bg: useColorModeValue('blue.600', 'blue.800')
-              }}
-              onClick={handleNextPage}
-              isDisabled={pages === totalPage}
-            >
-              <ChevronRightIcon
-                fontSize={'xl'}
-              />
-            </Button>
+          <Flex justifyContent={'space-between'} gap={5} alignItems={'center'} py={5}>
+            <Text color={useColorModeValue('gray.500', 'gray.400')}>
+              Page {pages} of {totalPage}
+            </Text>
+            <Flex gap={5}>
+              <Button
+                bg={useColorModeValue('blue.500', 'blue.700')}
+                color={'white'}
+                _hover={{
+                  bg: useColorModeValue('blue.600', 'blue.800')
+                }}
+                isDisabled={pages === 1}
+                onClick={handlePrevPage}
+              >
+                <ChevronLeftIcon
+                  fontSize={'xl'}
+                />
+              </Button>
+              <Button
+                bg={useColorModeValue('blue.500', 'blue.700')}
+                color={'white'}
+                _hover={{
+                  bg: useColorModeValue('blue.600', 'blue.800')
+                }}
+                onClick={handleNextPage}
+                isDisabled={pages === totalPage}
+              >
+                <ChevronRightIcon
+                  fontSize={'xl'}
+                />
+              </Button>
+            </Flex>
           </Flex>
         </Stack>
       </GridItem>
