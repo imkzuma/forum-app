@@ -51,7 +51,8 @@ export default function WriteCommentComponent({ id }: { id: number | string }) {
         align={'center'}
       >
         <Avatar
-          name={'gung krisna'}
+          name={username}
+          size={{ base: "sm", md: 'md' }}
         />
         <Input
           border={'none'}
@@ -59,6 +60,8 @@ export default function WriteCommentComponent({ id }: { id: number | string }) {
           borderColor={useColorModeValue('gray.400', 'gray.600')}
           rounded={'none'}
           type={'text'}
+          fontSize={{ base: "sm", md: 'md' }}
+          px={0}
           placeholder="Write a comment"
           _focus={{
             outline: 'none',
@@ -73,6 +76,7 @@ export default function WriteCommentComponent({ id }: { id: number | string }) {
         <Flex justify={'end'} display={showButton ? 'flex' : 'none'} gap={4}>
           <Button
             onClick={handleCancelComment}
+            size={{ base: "sm", md: "md" }}
           >
             Batal
           </Button>
@@ -83,6 +87,7 @@ export default function WriteCommentComponent({ id }: { id: number | string }) {
               bg: useColorModeValue('blue.600', 'blue.700')
             }}
             onClick={handlePostComment}
+            size={{ base: "sm", md: "md" }}
           >
             Kirim Komentar
           </Button>

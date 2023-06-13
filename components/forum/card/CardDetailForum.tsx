@@ -24,15 +24,12 @@ export default function CardListForum({ Id, Title, like, dislike, PostDate, Cont
   const [title, setTitle] = useState<string>();
   const [postDate, setPostDate] = useState<string>();
   const [content, setContent] = useState<string>();
-  const [accUsername, setAccUsername] = useState<string>();
-  const [readMore, setReadMore] = useState<boolean>(false);
 
   useLayoutEffect(() => {
     setId(Id);
     setTitle(Title);
     setPostDate(PostDate);
     setContent(Content);
-    setAccUsername(AccountUsername)
 
     setIsLiked({ id: id, like: like, liked: false });
     setIsDisliked({ id: id, dislike: dislike, disliked: false });
@@ -92,7 +89,7 @@ export default function CardListForum({ Id, Title, like, dislike, PostDate, Cont
           <HStack spacing={4}>
             <Avatar
               name={AccountUsername}
-              rounded={'lg'}
+              rounded={'full'}
             />
             <Stack spacing={0}>
               <Text fontWeight={'semibold'}>{AccountUsername}</Text>

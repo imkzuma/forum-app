@@ -73,6 +73,7 @@ export default function WriteReplyComponent({ id }: { id: number | string }) {
         <Flex justify={'end'} display={showButton ? 'flex' : 'none'} gap={4}>
           <Button
             onClick={handleCancelComment}
+            size={{ base: 'sm', md: 'md' }}
           >
             Batal
           </Button>
@@ -83,11 +84,12 @@ export default function WriteReplyComponent({ id }: { id: number | string }) {
               bg: useColorModeValue('blue.600', 'blue.700')
             }}
             onClick={handlePostReply}
+            size={{ base: 'sm', md: "md" }}
           >
             Kirim Komentar
           </Button>
         </Flex>
       </Fade>
-    </Stack>
+    </Stack >
   )
 }

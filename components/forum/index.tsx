@@ -1,31 +1,33 @@
-import { Box, Button, Flex, Grid, GridItem, Stack, Text, useColorModeValue } from "@chakra-ui/react";
-import CardListForum from "./card/CardListForum";
-import { faker } from "@faker-js/faker";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useState, useLayoutEffect } from "react";
-import { ForumApi } from "@/utils/api";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { Box, Button, Flex, Grid, GridItem, Skeleton, Stack, Text, useColorModeValue } from "@chakra-ui/react";
 
-// const data = [
-//   { id: 1, slug: faker.string.uuid(), title: faker.music.songName(), content: faker.lorem.paragraph(15), postDate: faker.date.month(), tag: faker.music.genre(), username: faker.person.middleName(), like: 10, dislike: 2, comment: 2 },
-//   { id: 2, slug: faker.string.uuid(), title: faker.music.songName(), content: faker.lorem.paragraph(15), postDate: faker.date.month(), tag: faker.music.genre(), username: faker.person.middleName(), like: 10, dislike: 2, comment: 2 },
-//   { id: 3, slug: faker.string.uuid(), title: faker.music.songName(), content: faker.lorem.paragraph(15), postDate: faker.date.month(), tag: faker.music.genre(), username: faker.person.middleName(), like: 10, dislike: 2, comment: 2 },
-//   { id: 4, slug: faker.string.uuid(), title: faker.music.songName(), content: faker.lorem.paragraph(15), postDate: faker.date.month(), tag: faker.music.genre(), username: faker.person.middleName(), like: 10, dislike: 2, comment: 2 },
-// ];
+import CardListForum from "./card/CardListForum";
+import { ForumApi } from "@/utils/api";
 
 export default function ForumComponents() {
   const [pages, setPages] = useState<number>(1);
   const [data, setData] = useState<any>();
   const [totalPage, setTotalPage] = useState<number>();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const generateRandomNumber = (min: number, max: number) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
   useLayoutEffect(() => {
     const getData = async () => {
       try {
+        setLoading(true);
+
         const response = await ForumApi.get(`/thread/?page=${pages}`);
         setData(response.data.data.threads)
         setTotalPage(response.data.data.pagination.totalPage)
-        console.log(response.data);
+
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     }
     getData();
@@ -42,6 +44,8 @@ export default function ForumComponents() {
       setPages(pages + 1);
     }
   }
+
+  const bgLoading = useColorModeValue('white', 'gray.800');
 
   return (
     <Grid
@@ -77,6 +81,21 @@ export default function ForumComponents() {
             </Stack>
             <ChevronRightIcon fontSize={'3xl'} color={'white'} />
           </Flex>
+          {loading && (
+            Array.from({ length: 10 }).map((_, index) => {
+              return (
+                <Box key={index} bg={bgLoading} boxShadow={'2xl'} rounded={'md'} p={6}>
+                  <Stack spacing={4}>
+                    <Skeleton height="50px" />
+                    <Skeleton height="50px" />
+                    <Skeleton height="20px" />
+                    <Skeleton height="20px" />
+                    <Skeleton height="20px" />
+                  </Stack>
+                </Box>
+              )
+            })
+          )}
           {data?.length > 0
             ?
             data?.map((item: any, index: number) => {
@@ -87,12 +106,18 @@ export default function ForumComponents() {
                   PostDate={item.createdAt}
                   Content={item.content}
                   AccountUsername={item.AccountUsername}
-                  like={21}
-                  dislike={2}
+                  like={generateRandomNumber(1, 100)}
+                  dislike={generateRandomNumber(1, 100)}
                 />
               )
             })
-            : 'No data'
+            : (
+              <Text
+                textAlign={'center'}
+              >
+                No Threads Yet.
+              </Text>
+            )
           }
 
           <Flex justifyContent={'space-between'} gap={5} alignItems={'center'} py={5}>
