@@ -18,9 +18,11 @@ function NavigationMobile({ isOpen, onOpen, onClose }: { isOpen: boolean, onOpen
     >
       <DrawerContent display={{ base: "block", md: "none" }}>
         <DrawerCloseButton />
+
         <DrawerHeader>
           <ForumLogoFull />
         </DrawerHeader>
+
         <DrawerBody py={5}>
           <Stack spacing={4}>
             <Text as="a"
