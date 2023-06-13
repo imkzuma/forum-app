@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import CardDetailForum from "./card/CardDetailForum";
 import { Flex, Stack, Text, useColorModeValue } from "@chakra-ui/react";
 import { ChevronLeftIcon } from "@chakra-ui/icons";
@@ -11,7 +10,11 @@ import { useLayoutEffect, useState } from 'react';
 export default function DetailForumComponents({ id }: { id: number | string }) {
   const [hasComment, setHasComment] = useState<boolean>(false);
   const [dataThread, setDataThread] = useState<any>();
-  const [dataComment, setDataComment] = useState<any>();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const generateRandomNumber = (min: number, max: number) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
   useLayoutEffect(() => {
     const getData = async () => {
@@ -36,11 +39,9 @@ export default function DetailForumComponents({ id }: { id: number | string }) {
           }
           else if (comments.length > 0) {
             setHasComment(true);
-            setDataComment(comments);
           }
         }
       } catch (error) {
-        console.log(error);
       }
     }
     getComments();
@@ -54,14 +55,15 @@ export default function DetailForumComponents({ id }: { id: number | string }) {
         <Text>Detail Threads</Text>
         <ChevronLeftIcon bg={'transparent'} color={'transparent'} />
       </Flex>
+
       <CardDetailForum
         Id={dataThread?.id}
         Title={dataThread?.title}
         AccountUsername={dataThread?.AccountUsername}
         PostDate={dataThread?.createdAt}
         Content={dataThread?.content}
-        like={10}
-        dislike={3}
+        like={generateRandomNumber(1, 100)}
+        dislike={generateRandomNumber(1, 100)}
       />
 
       <WriteCommentComponent id={id} />
